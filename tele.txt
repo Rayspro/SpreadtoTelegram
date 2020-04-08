@@ -1,0 +1,34 @@
+var token="1131796116:AAGSD0BeQjZ0sc7Nle4k1hLnhxxI70ACouQ";
+var telegramUrl = "https://api.telegram.org/bot"+token;
+var webAppUrl ="https://script.google.com/macros/s/AKfycbzt25jmad-QQlOxAiOZVqLHFKyIDgyFjV2JD1hluXX15tmneUP2/exec";
+
+
+function setWebhook() {
+  var url = telegramUrl + "/setWebhook?url=" + webAppUrl;
+  var response = UrlFetchApp.fetch(url);
+  Logger.log(response.getContentText());
+}
+
+function sendText(id, text) {
+  var url = telegramUrl + "/sendMessage?chat_id=" + id + "&text="+ text;
+  var response = UrlFetchApp.fetch(url);
+}
+
+function doGet(e){
+  return HtmlService.createHtmlOutput("Hi There");
+}
+
+function doPost(e){
+  var data=JSON.parse(e.postData.contents);
+  var text=data.message.text;
+  var id=data.message.chat.id;
+  var answer="hello";
+  var ssid="1mY7gwtaaCWyokVsH6L1TBsCiTyXpj8DHqkBbhi9Gpwk";
+  var spread=SpreadsheetApp.openById(ssid).getSheetByName("spread");
+  
+  if(text=="data"){
+    var data=SpreadsheetApp.getActiveSheet().getDataRange().getValues()
+    sendText(id,data); 
+  }
+ //GmailApp.sendEmail(Session.getEffectiveUser().getEmail(),"hello",JSON.stringify(e,null,4));
+}
